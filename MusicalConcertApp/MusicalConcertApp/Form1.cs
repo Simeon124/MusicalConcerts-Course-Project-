@@ -1,5 +1,8 @@
-﻿using Data;
+﻿using Business;
+using Data;
 using Data.Models;
+using System.Drawing.Printing;
+using System.Windows.Forms.VisualStyles;
 
 namespace MusicalConcertApp
 {
@@ -12,12 +15,16 @@ namespace MusicalConcertApp
             InitializeComponent();
             homePagePanel.Visible = true;
             LoginSlashRegisterPanel.Visible = false;
+            concertsPanel.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             LoginSlashRegisterPanel.Visible = false;
+            concertsPanel.Visible = false;
             homePagePanel.Visible = true;
+
+            concertsPanel.Controls.Clear();
 
             loginErrorSpan.Text = string.Empty;
             registerErrorSpan.Text = string.Empty;
@@ -38,6 +45,8 @@ namespace MusicalConcertApp
         {
             LoginSlashRegisterPanel.Visible = true;
             homePagePanel.Visible = false;
+            concertsPanel.Visible = false;
+            concertsPanel.Controls.Clear();
         }
 
         private void registerButton_Click(object sender, EventArgs e)
@@ -45,7 +54,7 @@ namespace MusicalConcertApp
             using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
             {
                 var foundUser = dbc.Users.FirstOrDefault(x => x.Name == registerNameTextBox.Text);
-                if(foundUser == null)
+                if (foundUser == null)
                 {
                     User newUser = new User()
                     {
@@ -74,9 +83,9 @@ namespace MusicalConcertApp
             using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
             {
                 var foundUser = dbc.Users.FirstOrDefault(x => x.Name == loginNameTextBox.Text);
-                if(foundUser != null)
+                if (foundUser != null)
                 {
-                    if(loginPasswordTextBox.Text == foundUser.Password)
+                    if (loginPasswordTextBox.Text == foundUser.Password)
                     {
                         currentUser = foundUser;
                         isLoggedIn = true;
@@ -96,6 +105,52 @@ namespace MusicalConcertApp
                     loginErrorSpan.Visible = true;
                     loginErrorSpan.Text += "Не е намерен акаунт с това име.";
                 }
+            }
+        }
+
+        private void concertsButton_Click(object sender, EventArgs e)
+        {
+            LoginSlashRegisterPanel.Visible = false;
+            homePagePanel.Visible = false;
+            concertsPanel.Visible = true;
+
+            var concerts = Business.Business.GetConcerts();
+            foreach (var concert in concerts)
+            {
+                Panel card = new Panel
+                {
+                    Height = 240,
+                    Width = 120,
+                    BackColor = Color.White,
+                    BorderStyle = BorderStyle.FixedSingle,
+                };
+
+                Label title = new Label
+                {
+                    Text = concert.Name,
+                    Location = new Point(10, 10),
+                    ForeColor = Color.Black,
+                    AutoSize = true,
+                };
+                Label location = new Label
+                {
+                    Text = $"Място: {concert.Location}",
+                    Location = new Point(10, 30),
+                    ForeColor = Color.Black,
+                    AutoSize = true,
+                };
+
+                Button button = new Button()
+                {
+                    Location = new Point(10, 50),
+                    Text = "Още...",
+                };
+
+                card.Controls.Add(title);
+                card.Controls.Add(location);
+                card.Controls.Add(button);
+
+                concertsPanel.Controls.Add(card);
             }
         }
     }

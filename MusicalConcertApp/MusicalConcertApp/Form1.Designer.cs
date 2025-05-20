@@ -54,6 +54,7 @@
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
+            concertsPanel = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             homePagePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -170,6 +171,7 @@
             concertsButton.Size = new Size(29, 27);
             concertsButton.TabIndex = 4;
             concertsButton.UseVisualStyleBackColor = false;
+            concertsButton.Click += concertsButton_Click;
             // 
             // userName
             // 
@@ -380,6 +382,15 @@
             label2.TabIndex = 0;
             label2.Text = "РЕГИСТРИРАЙ СЕ";
             // 
+            // concertsPanel
+            // 
+            concertsPanel.AutoScroll = true;
+            concertsPanel.BackColor = Color.Transparent;
+            concertsPanel.Location = new Point(-5, 45);
+            concertsPanel.Name = "concertsPanel";
+            concertsPanel.Size = new Size(810, 409);
+            concertsPanel.TabIndex = 5;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -390,6 +401,7 @@
             Controls.Add(profileButton);
             Controls.Add(HomeButton);
             Controls.Add(pictureBox1);
+            Controls.Add(concertsPanel);
             Controls.Add(homePagePanel);
             Controls.Add(LoginSlashRegisterPanel);
             Name = "Form1";
@@ -432,5 +444,6 @@
         private TextBox loginNameTextBox;
         private Label loginErrorSpan;
         private Label registerErrorSpan;
+        private FlowLayoutPanel concertsPanel;
     }
 }

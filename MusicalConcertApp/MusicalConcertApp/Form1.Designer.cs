@@ -55,10 +55,16 @@
             label3 = new Label();
             label2 = new Label();
             concertsPanel = new FlowLayoutPanel();
+            concertPanel = new Panel();
+            signButton = new Button();
+            concertGenreLabel = new Label();
+            concertDescription = new RichTextBox();
+            concertTitle = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             homePagePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             LoginSlashRegisterPanel.SuspendLayout();
+            concertPanel.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox1
@@ -391,6 +397,56 @@
             concertsPanel.Size = new Size(810, 409);
             concertsPanel.TabIndex = 5;
             // 
+            // concertPanel
+            // 
+            concertPanel.Controls.Add(signButton);
+            concertPanel.Controls.Add(concertGenreLabel);
+            concertPanel.Controls.Add(concertDescription);
+            concertPanel.Controls.Add(concertTitle);
+            concertPanel.Location = new Point(0, 0);
+            concertPanel.Name = "concertPanel";
+            concertPanel.Size = new Size(804, 451);
+            concertPanel.TabIndex = 0;
+            // 
+            // signButton
+            // 
+            signButton.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            signButton.Location = new Point(540, 365);
+            signButton.Name = "signButton";
+            signButton.Size = new Size(95, 23);
+            signButton.TabIndex = 3;
+            signButton.Text = "Запиши се";
+            signButton.UseVisualStyleBackColor = true;
+            signButton.Click += signButton_Click;
+            // 
+            // concertGenreLabel
+            // 
+            concertGenreLabel.AutoSize = true;
+            concertGenreLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            concertGenreLabel.Location = new Point(23, 115);
+            concertGenreLabel.Name = "concertGenreLabel";
+            concertGenreLabel.Size = new Size(52, 21);
+            concertGenreLabel.TabIndex = 2;
+            concertGenreLabel.Text = "Genre";
+            // 
+            // concertDescription
+            // 
+            concertDescription.Location = new Point(23, 163);
+            concertDescription.Name = "concertDescription";
+            concertDescription.Size = new Size(274, 225);
+            concertDescription.TabIndex = 1;
+            concertDescription.Text = "Concert Description";
+            // 
+            // concertTitle
+            // 
+            concertTitle.AutoSize = true;
+            concertTitle.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            concertTitle.Location = new Point(23, 83);
+            concertTitle.Name = "concertTitle";
+            concertTitle.Size = new Size(60, 32);
+            concertTitle.TabIndex = 0;
+            concertTitle.Text = "Title";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -401,6 +457,7 @@
             Controls.Add(profileButton);
             Controls.Add(HomeButton);
             Controls.Add(pictureBox1);
+            Controls.Add(concertPanel);
             Controls.Add(concertsPanel);
             Controls.Add(homePagePanel);
             Controls.Add(LoginSlashRegisterPanel);
@@ -412,6 +469,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             LoginSlashRegisterPanel.ResumeLayout(false);
             LoginSlashRegisterPanel.PerformLayout();
+            concertPanel.ResumeLayout(false);
+            concertPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -445,5 +504,10 @@
         private Label loginErrorSpan;
         private Label registerErrorSpan;
         private FlowLayoutPanel concertsPanel;
+        private Panel concertPanel;
+        private Label concertGenreLabel;
+        private RichTextBox concertDescription;
+        private Label concertTitle;
+        private Button signButton;
     }
 }

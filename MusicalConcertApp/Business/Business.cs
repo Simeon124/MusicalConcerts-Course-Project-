@@ -1,5 +1,6 @@
 ﻿using Data;
 using Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business
 {
@@ -18,6 +19,15 @@ namespace Business
             {
                 Concerts = dbc.Concerts.ToList();
                 return Concerts;
+            }
+        }
+
+        public static List<Concert> GetUserConcertsById(int id)
+        {
+            using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
+            {
+                var user = dbc.UserConcerts.Include(uc => uc.Concerts).FirstOrDefault(x => x.Id == id);
+                return user.Concerts.ToList();
             }
         }
 

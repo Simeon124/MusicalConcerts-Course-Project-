@@ -31,8 +31,6 @@
             pictureBox1 = new PictureBox();
             homePagePanel = new Panel();
             richTextBox1 = new RichTextBox();
-            LatestConcertButton = new Button();
-            label1 = new Label();
             pictureBox2 = new PictureBox();
             HomeButton = new Button();
             profileButton = new Button();
@@ -60,6 +58,8 @@
             concertGenreLabel = new Label();
             concertDescription = new RichTextBox();
             concertTitle = new Label();
+            accSignOutButton = new Button();
+            userPanel = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             homePagePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -71,7 +71,7 @@
             // 
             pictureBox1.BackColor = SystemColors.ActiveCaption;
             pictureBox1.BackgroundImage = Properties.Resources.BG57;
-            pictureBox1.Location = new Point(-5, -1);
+            pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(813, 50);
             pictureBox1.TabIndex = 0;
@@ -79,9 +79,10 @@
             // 
             // homePagePanel
             // 
+            homePagePanel.BackColor = Color.Transparent;
+            homePagePanel.BackgroundImage = Properties.Resources.rm218_bb_07;
+            homePagePanel.BackgroundImageLayout = ImageLayout.Stretch;
             homePagePanel.Controls.Add(richTextBox1);
-            homePagePanel.Controls.Add(LatestConcertButton);
-            homePagePanel.Controls.Add(label1);
             homePagePanel.Controls.Add(pictureBox2);
             homePagePanel.Location = new Point(-5, 45);
             homePagePanel.Name = "homePagePanel";
@@ -91,44 +92,15 @@
             // richTextBox1
             // 
             richTextBox1.BackColor = Color.MidnightBlue;
-            richTextBox1.BorderStyle = BorderStyle.None;
             richTextBox1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             richTextBox1.ForeColor = Color.FromArgb(128, 128, 255);
-            richTextBox1.Location = new Point(28, 40);
+            richTextBox1.Location = new Point(170, 57);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.ReadOnly = true;
             richTextBox1.ScrollBars = RichTextBoxScrollBars.Vertical;
-            richTextBox1.Size = new Size(253, 258);
+            richTextBox1.Size = new Size(481, 258);
             richTextBox1.TabIndex = 4;
             richTextBox1.Text = "Добре дошли в приложението за музикални концерти. Тук можете да разглеждате и да купувате билети за концерти";
-            // 
-            // LatestConcertButton
-            // 
-            LatestConcertButton.BackColor = Color.FromArgb(0, 0, 64);
-            LatestConcertButton.BackgroundImage = Properties.Resources._195123;
-            LatestConcertButton.BackgroundImageLayout = ImageLayout.Center;
-            LatestConcertButton.FlatStyle = FlatStyle.Popup;
-            LatestConcertButton.Location = new Point(516, 102);
-            LatestConcertButton.Name = "LatestConcertButton";
-            LatestConcertButton.Size = new Size(229, 291);
-            LatestConcertButton.TabIndex = 2;
-            LatestConcertButton.UseVisualStyleBackColor = false;
-            LatestConcertButton.Click += LatestConcertButton_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Gray;
-            label1.BorderStyle = BorderStyle.Fixed3D;
-            label1.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label1.ForeColor = SystemColors.ButtonFace;
-            label1.Image = Properties.Resources.BG57;
-            label1.ImageAlign = ContentAlignment.TopCenter;
-            label1.Location = new Point(490, 16);
-            label1.Name = "label1";
-            label1.Size = new Size(255, 32);
-            label1.TabIndex = 1;
-            label1.Text = "Най-скорошен концерт";
             // 
             // pictureBox2
             // 
@@ -193,6 +165,7 @@
             // 
             // LoginSlashRegisterPanel
             // 
+            LoginSlashRegisterPanel.BackColor = Color.Transparent;
             LoginSlashRegisterPanel.BackgroundImage = Properties.Resources.rm218_bb_07;
             LoginSlashRegisterPanel.BackgroundImageLayout = ImageLayout.Stretch;
             LoginSlashRegisterPanel.Controls.Add(loginErrorSpan);
@@ -348,6 +321,7 @@
             registerNameTextBox.BackColor = Color.DarkSlateBlue;
             registerNameTextBox.ForeColor = SystemColors.ButtonFace;
             registerNameTextBox.Location = new Point(61, 127);
+            registerNameTextBox.MaxLength = 8;
             registerNameTextBox.Name = "registerNameTextBox";
             registerNameTextBox.Size = new Size(180, 23);
             registerNameTextBox.TabIndex = 3;
@@ -392,20 +366,26 @@
             // 
             concertsPanel.AutoScroll = true;
             concertsPanel.BackColor = Color.Transparent;
-            concertsPanel.Location = new Point(-5, 45);
+            concertsPanel.BackgroundImage = Properties.Resources.rm218_bb_07;
+            concertsPanel.BackgroundImageLayout = ImageLayout.Stretch;
+            concertsPanel.Location = new Point(-5, 48);
             concertsPanel.Name = "concertsPanel";
-            concertsPanel.Size = new Size(810, 409);
+            concertsPanel.Size = new Size(806, 406);
             concertsPanel.TabIndex = 5;
+            concertsPanel.Paint += concertsPanel_Paint;
             // 
             // concertPanel
             // 
+            concertPanel.BackColor = Color.Transparent;
+            concertPanel.BackgroundImage = Properties.Resources.rm218_bb_07;
+            concertPanel.BackgroundImageLayout = ImageLayout.Stretch;
             concertPanel.Controls.Add(signButton);
             concertPanel.Controls.Add(concertGenreLabel);
             concertPanel.Controls.Add(concertDescription);
             concertPanel.Controls.Add(concertTitle);
-            concertPanel.Location = new Point(0, 0);
+            concertPanel.Location = new Point(0, 48);
             concertPanel.Name = "concertPanel";
-            concertPanel.Size = new Size(804, 451);
+            concertPanel.Size = new Size(804, 403);
             concertPanel.TabIndex = 0;
             // 
             // signButton
@@ -423,6 +403,7 @@
             // 
             concertGenreLabel.AutoSize = true;
             concertGenreLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            concertGenreLabel.ForeColor = SystemColors.ControlLightLight;
             concertGenreLabel.Location = new Point(23, 115);
             concertGenreLabel.Name = "concertGenreLabel";
             concertGenreLabel.Size = new Size(52, 21);
@@ -441,31 +422,59 @@
             // 
             concertTitle.AutoSize = true;
             concertTitle.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            concertTitle.ForeColor = SystemColors.ControlLight;
             concertTitle.Location = new Point(23, 83);
             concertTitle.Name = "concertTitle";
             concertTitle.Size = new Size(60, 32);
             concertTitle.TabIndex = 0;
             concertTitle.Text = "Title";
             // 
+            // accSignOutButton
+            // 
+            accSignOutButton.BackColor = Color.Black;
+            accSignOutButton.FlatAppearance.BorderSize = 0;
+            accSignOutButton.FlatStyle = FlatStyle.Flat;
+            accSignOutButton.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            accSignOutButton.ForeColor = Color.Red;
+            accSignOutButton.Location = new Point(621, 12);
+            accSignOutButton.Name = "accSignOutButton";
+            accSignOutButton.Size = new Size(75, 27);
+            accSignOutButton.TabIndex = 4;
+            accSignOutButton.Text = "Излез";
+            accSignOutButton.UseVisualStyleBackColor = false;
+            accSignOutButton.Visible = false;
+            accSignOutButton.Click += accSignOutButton_Click;
+            // 
+            // userPanel
+            // 
+            userPanel.BackColor = Color.Transparent;
+            userPanel.BackgroundImage = Properties.Resources.rm218_bb_07;
+            userPanel.BackgroundImageLayout = ImageLayout.Stretch;
+            userPanel.Location = new Point(0, 45);
+            userPanel.Name = "userPanel";
+            userPanel.Size = new Size(801, 403);
+            userPanel.TabIndex = 0;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(accSignOutButton);
             Controls.Add(userName);
             Controls.Add(concertsButton);
             Controls.Add(profileButton);
             Controls.Add(HomeButton);
             Controls.Add(pictureBox1);
-            Controls.Add(concertPanel);
-            Controls.Add(concertsPanel);
             Controls.Add(homePagePanel);
+            Controls.Add(userPanel);
+            Controls.Add(concertsPanel);
+            Controls.Add(concertPanel);
             Controls.Add(LoginSlashRegisterPanel);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             homePagePanel.ResumeLayout(false);
-            homePagePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             LoginSlashRegisterPanel.ResumeLayout(false);
             LoginSlashRegisterPanel.PerformLayout();
@@ -483,8 +492,6 @@
         private Button HomeButton;
         private Button profileButton;
         private Button concertsButton;
-        private Label label1;
-        private Button LatestConcertButton;
         private RichTextBox richTextBox1;
         private Label userName;
         private Panel LoginSlashRegisterPanel;
@@ -509,5 +516,7 @@
         private RichTextBox concertDescription;
         private Label concertTitle;
         private Button signButton;
+        private FlowLayoutPanel userPanel;
+        private Button accSignOutButton;
     }
 }

@@ -3,6 +3,8 @@ using Data;
 using Data.Models;
 using System.Drawing.Printing;
 using System.Windows.Forms.VisualStyles;
+using Microsoft.EntityFrameworkCore;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace MusicalConcertApp
 {
@@ -18,6 +20,7 @@ namespace MusicalConcertApp
             LoginSlashRegisterPanel.Visible = false;
             concertsPanel.Visible = false;
             concertPanel.Visible = false;
+            userPanel.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -26,6 +29,7 @@ namespace MusicalConcertApp
             concertsPanel.Visible = false;
             homePagePanel.Visible = true;
             concertPanel.Visible = false;
+            userPanel.Visible = false;
 
             concertsPanel.Controls.Clear();
 
@@ -39,18 +43,71 @@ namespace MusicalConcertApp
             registerPasswordTextBox.Text = string.Empty;
         }
 
-        private void LatestConcertButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void profileButton_Click(object sender, EventArgs e)
         {
-            LoginSlashRegisterPanel.Visible = true;
-            homePagePanel.Visible = false;
-            concertsPanel.Visible = false;
-            concertPanel.Visible = false;
-            concertsPanel.Controls.Clear();
+            if (currentUser != null)
+            {
+                LoginSlashRegisterPanel.Visible = false;
+                homePagePanel.Visible = false;
+                concertsPanel.Visible = false;
+                concertPanel.Visible = false;
+
+                userPanel.Controls.Clear();
+                userPanel.Visible = true;
+
+                var concerts = Business.Business.GetUserConcertsById(currentUser.Id);
+                foreach (var concert in concerts)
+                {
+                    Panel card = new Panel
+                    {
+                        Height = 240,
+                        Width = 120,
+                        Margin = new Padding(20, 100, 20, 20),
+                        BackColor = Color.FromArgb(25, Color.White),
+                        BorderStyle = BorderStyle.Fixed3D,
+                    };
+
+                    Label title = new Label
+                    {
+                        Text = concert.Name,
+                        Location = new Point(10, 10),
+                        ForeColor = Color.White,
+                        BackColor = Color.Transparent,
+                        AutoSize = true,
+                    };
+                    Label location = new Label
+                    {
+                        Text = $"Място: {concert.Location}",
+                        Location = new Point(10, 30),
+                        ForeColor = Color.White,
+                        BackColor = Color.Transparent,
+                        AutoSize = true,
+                    };
+
+                    Button button = new Button()
+                    {
+                        Location = new Point(10, 50),
+                        Text = "Още...",
+                        Name = concert.Name,
+                    };
+                    button.Click += new EventHandler(concertInfoButton);
+
+                    card.Controls.Add(title);
+                    card.Controls.Add(location);
+                    card.Controls.Add(button);
+
+                    userPanel.Controls.Add(card);
+                }
+            }
+            else
+            {
+                LoginSlashRegisterPanel.Visible = true;
+                homePagePanel.Visible = false;
+                concertsPanel.Visible = false;
+                concertPanel.Visible = false;
+                userPanel.Visible = false;
+                concertsPanel.Controls.Clear();
+            }
         }
 
         private void registerButton_Click(object sender, EventArgs e)
@@ -71,6 +128,7 @@ namespace MusicalConcertApp
                     isLoggedIn = true;
                     LoginSlashRegisterPanel.Visible = false;
                     homePagePanel.Visible = true;
+                    accSignOutButton.Visible = true;
                     userName.Visible = true;
                     userName.Text = currentUser.Name;
                 }
@@ -96,6 +154,7 @@ namespace MusicalConcertApp
                         userName.Visible = true;
                         userName.Text = currentUser.Name;
                         LoginSlashRegisterPanel.Visible = false;
+                        accSignOutButton.Visible = true;
                         homePagePanel.Visible = true;
                     }
                     else
@@ -118,7 +177,9 @@ namespace MusicalConcertApp
             homePagePanel.Visible = false;
             concertsPanel.Visible = true;
             concertPanel.Visible = false;
+            userPanel.Visible = false;
 
+            concertsPanel.Controls.Clear();
             var concerts = Business.Business.GetConcerts();
             foreach (var concert in concerts)
             {
@@ -126,7 +187,7 @@ namespace MusicalConcertApp
                 {
                     Height = 240,
                     Width = 120,
-                    BackColor = Color.White,
+                    BackColor = Color.FromArgb(25, Color.White),
                     BorderStyle = BorderStyle.FixedSingle,
                 };
 
@@ -134,14 +195,16 @@ namespace MusicalConcertApp
                 {
                     Text = concert.Name,
                     Location = new Point(10, 10),
-                    ForeColor = Color.Black,
+                    ForeColor = Color.White,
+                    BackColor = Color.Transparent,
                     AutoSize = true,
                 };
                 Label location = new Label
                 {
                     Text = $"Място: {concert.Location}",
                     Location = new Point(10, 30),
-                    ForeColor = Color.Black,
+                    ForeColor = Color.White,
+                    BackColor = Color.Transparent,
                     AutoSize = true,
                 };
 
@@ -167,6 +230,7 @@ namespace MusicalConcertApp
             homePagePanel.Visible = false;
             concertsPanel.Visible = false;
             concertPanel.Visible = true;
+            userPanel.Visible = false;
             concertsPanel.Controls.Clear();
 
             var clickedButton = sender as Button;
@@ -176,14 +240,39 @@ namespace MusicalConcertApp
                 using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
                 {
                     var choosenConcert = dbc.Concerts.FirstOrDefault(x => x.Name == clickedButton.Name);
+                    currentConcert = choosenConcert;
+                    concertTitle.Text = choosenConcert.Name;
+                    concertDescription.Text = "";
+                    concertDescription.Text += $"Концертът ще се изпълни от {choosenConcert.Performers} в град/село {choosenConcert.Location} на " +
+                        $"{choosenConcert.ConcertStartDate.Day}-{choosenConcert.ConcertStartDate.Month}-{choosenConcert.ConcertStartDate.Year} г. ";
+                    concertGenreLabel.Text = choosenConcert.Genre.ToString();
+
                     if (choosenConcert != null)
                     {
-                        if(dbc.UserConcerts != null)
+                        if (dbc.UserConcerts != null)
                         {
-                            //var currentUserConcert = dbc.UserConcerts.FirstOrDefault(x => x.User == currentUser).Concerts.FirstOrDefault(c => c == choosenConcert);
+                            var userConcert = dbc.UserConcerts.Include(uc => uc.Concerts).FirstOrDefault(x => x.User == currentUser);
+                            Concert currentUserConcert = null;
+
+                            if (userConcert != null)
+                            {
+                                currentUserConcert = userConcert.Concerts.FirstOrDefault(x => x == currentConcert);
+                            }
+
                             if (currentUser != null)
                             {
-                                signButton.Enabled = true;
+                                if (currentUserConcert == null)
+                                {
+                                    signButton.Enabled = true;
+                                    signButton.Text = "Запиши се";
+                                    signButton.Click += new EventHandler(signButton_Click);
+                                }
+                                else
+                                {
+                                    signButton.Text = "Отпиши се";
+                                    signButton.Enabled = true;
+                                    signButton.Click += new EventHandler(signOutButton_Click);
+                                }
                             }
                             else
                             {
@@ -194,14 +283,9 @@ namespace MusicalConcertApp
                         {
                             signButton.Enabled = true;
                         }
-                        
 
-                        currentConcert = choosenConcert;
-                        concertTitle.Text = choosenConcert.Name;
-                        concertDescription.Text = "";
-                        concertDescription.Text += $"Концертът ще се изпълни от {choosenConcert.Performers} в град/село {choosenConcert.Location} на " +
-                            $"{choosenConcert.ConcertStartDate.Day}-{choosenConcert.ConcertStartDate.Month}-{choosenConcert.ConcertStartDate.Year} г. ";
-                        concertGenreLabel.Text = choosenConcert.Genre.ToString();
+
+
                     }
                 }
             }
@@ -211,31 +295,130 @@ namespace MusicalConcertApp
         {
             var clickedButton = sender as Button;
 
-            if(clickedButton != null)
+            if (clickedButton != null)
             {
                 clickedButton.Enabled = false;
 
                 using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
                 {
-                    ConcertUsers concertUsers = new ConcertUsers
+                    var concert = dbc.Concerts.Find(currentConcert.Id);
+                    var user = dbc.Users.Find(currentUser.Id);
+
+                    var existingConcertUsers = dbc.ConcertUsers.FirstOrDefault(x => x.Concert == concert);
+
+                    if (existingConcertUsers == null)
                     {
-                        Concert = currentConcert,
-                    };
-                    concertUsers.Users.Add(currentUser);
+                        ConcertUsers concertUsers = new ConcertUsers
+                        {
+                            Concert = concert,
+                        };
+                        concertUsers.Users.Add(user);
 
-                    dbc.ConcertUsers.Add(concertUsers);
-                    dbc.SaveChanges();
-
-                    UserConcerts userConcerts = new UserConcerts
+                        dbc.ConcertUsers.Add(concertUsers);
+                        dbc.SaveChanges();
+                    }
+                    else
                     {
-                        User = currentUser,
-                    };
-                    userConcerts.Concerts.Add(currentConcert);
+                        existingConcertUsers.Users.Add(user);
+                        dbc.SaveChanges();
+                    }
 
-                    dbc.UserConcerts.Add(userConcerts);
-                    dbc.SaveChanges();
+
+                    var existingUserConcerts = dbc.UserConcerts.FirstOrDefault(x => x.User == user);
+
+                    if (existingUserConcerts == null)
+                    {
+                        UserConcerts userConcerts = new UserConcerts
+                        {
+                            User = user,
+                        };
+                        userConcerts.Concerts.Add(concert);
+
+                        dbc.UserConcerts.Add(userConcerts);
+                        dbc.SaveChanges();
+                    }
+                    else
+                    {
+                        existingUserConcerts.Concerts.Add(concert);
+                        dbc.SaveChanges();
+                    }
+
                 }
             }
+        }
+
+        private void concertsPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void signOutButton_Click(object sender, EventArgs e)
+        {
+            var clickedButton = sender as Button;
+
+            if (clickedButton != null)
+            {
+                clickedButton.Enabled = false;
+
+                using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
+                {
+                    var concert = dbc.Concerts.Find(currentConcert.Id);
+                    var user = dbc.Users.Find(currentUser.Id);
+
+                    var existingConcertUsers = dbc.ConcertUsers.FirstOrDefault(x => x.Concert == concert);
+
+                    if (existingConcertUsers == null)
+                    {
+                        ConcertUsers concertUsers = new ConcertUsers
+                        {
+                            Concert = concert,
+                        };
+                        concertUsers.Users.Remove(user);
+
+                        dbc.ConcertUsers.Remove(concertUsers);
+                        dbc.SaveChanges();
+                    }
+                    else
+                    {
+                        existingConcertUsers.Users.Remove(user);
+                        dbc.SaveChanges();
+                    }
+
+
+                    var existingUserConcerts = dbc.UserConcerts.FirstOrDefault(x => x.User == user);
+
+                    if (existingUserConcerts == null)
+                    {
+                        UserConcerts userConcerts = new UserConcerts
+                        {
+                            User = user,
+                        };
+                        userConcerts.Concerts.Remove(concert);
+
+                        dbc.UserConcerts.Remove(userConcerts);
+                        dbc.SaveChanges();
+                    }
+                    else
+                    {
+                        existingUserConcerts.Concerts.Remove(concert);
+                        dbc.SaveChanges();
+                    }
+
+                }
+            }
+        }
+
+        private void accSignOutButton_Click(object sender, EventArgs e)
+        {
+            currentUser = null;
+            userName.Visible = false;
+            accSignOutButton.Visible = false;
+
+            homePagePanel.Visible = true;
+            LoginSlashRegisterPanel.Visible = false;
+            concertsPanel.Visible = false;
+            concertPanel.Visible = false;
+            userPanel.Visible = false;
         }
     }
 }

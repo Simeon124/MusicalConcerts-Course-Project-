@@ -298,58 +298,8 @@ namespace MusicalConcertApp
             if (clickedButton != null)
             {
                 clickedButton.Enabled = false;
-
-                using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
-                {
-                    var concert = dbc.Concerts.Find(currentConcert.Id);
-                    var user = dbc.Users.Find(currentUser.Id);
-
-                    var existingConcertUsers = dbc.ConcertUsers.FirstOrDefault(x => x.Concert == concert);
-
-                    if (existingConcertUsers == null)
-                    {
-                        ConcertUsers concertUsers = new ConcertUsers
-                        {
-                            Concert = concert,
-                        };
-                        concertUsers.Users.Add(user);
-
-                        dbc.ConcertUsers.Add(concertUsers);
-                        dbc.SaveChanges();
-                    }
-                    else
-                    {
-                        existingConcertUsers.Users.Add(user);
-                        dbc.SaveChanges();
-                    }
-
-
-                    var existingUserConcerts = dbc.UserConcerts.FirstOrDefault(x => x.User == user);
-
-                    if (existingUserConcerts == null)
-                    {
-                        UserConcerts userConcerts = new UserConcerts
-                        {
-                            User = user,
-                        };
-                        userConcerts.Concerts.Add(concert);
-
-                        dbc.UserConcerts.Add(userConcerts);
-                        dbc.SaveChanges();
-                    }
-                    else
-                    {
-                        existingUserConcerts.Concerts.Add(concert);
-                        dbc.SaveChanges();
-                    }
-
-                }
+                Business.Business.SignForConcert(currentConcert, currentUser);
             }
-        }
-
-        private void concertsPanel_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void signOutButton_Click(object sender, EventArgs e)
@@ -359,52 +309,7 @@ namespace MusicalConcertApp
             if (clickedButton != null)
             {
                 clickedButton.Enabled = false;
-
-                using (MusicalConcertAppDbContext dbc = new MusicalConcertAppDbContext())
-                {
-                    var concert = dbc.Concerts.Find(currentConcert.Id);
-                    var user = dbc.Users.Find(currentUser.Id);
-
-                    var existingConcertUsers = dbc.ConcertUsers.FirstOrDefault(x => x.Concert == concert);
-
-                    if (existingConcertUsers == null)
-                    {
-                        ConcertUsers concertUsers = new ConcertUsers
-                        {
-                            Concert = concert,
-                        };
-                        concertUsers.Users.Remove(user);
-
-                        dbc.ConcertUsers.Remove(concertUsers);
-                        dbc.SaveChanges();
-                    }
-                    else
-                    {
-                        existingConcertUsers.Users.Remove(user);
-                        dbc.SaveChanges();
-                    }
-
-
-                    var existingUserConcerts = dbc.UserConcerts.FirstOrDefault(x => x.User == user);
-
-                    if (existingUserConcerts == null)
-                    {
-                        UserConcerts userConcerts = new UserConcerts
-                        {
-                            User = user,
-                        };
-                        userConcerts.Concerts.Remove(concert);
-
-                        dbc.UserConcerts.Remove(userConcerts);
-                        dbc.SaveChanges();
-                    }
-                    else
-                    {
-                        existingUserConcerts.Concerts.Remove(concert);
-                        dbc.SaveChanges();
-                    }
-
-                }
+                Business.Business.SignOutFromConcert(currentConcert, currentUser);
             }
         }
 
@@ -414,6 +319,7 @@ namespace MusicalConcertApp
             userName.Visible = false;
             accSignOutButton.Visible = false;
 
+            signButton.Text = "Запиши се";
             homePagePanel.Visible = true;
             LoginSlashRegisterPanel.Visible = false;
             concertsPanel.Visible = false;

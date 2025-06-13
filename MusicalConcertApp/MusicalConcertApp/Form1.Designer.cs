@@ -69,8 +69,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.BackColor = SystemColors.ActiveCaption;
-            pictureBox1.BackgroundImage = Properties.Resources.BG57;
+            pictureBox1.BackColor = SystemColors.ActiveCaptionText;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(813, 50);
@@ -100,7 +99,7 @@
             richTextBox1.ScrollBars = RichTextBoxScrollBars.Vertical;
             richTextBox1.Size = new Size(481, 258);
             richTextBox1.TabIndex = 4;
-            richTextBox1.Text = "Добре дошли в приложението за музикални концерти. Тук можете да разглеждате и да купувате билети за концерти";
+            richTextBox1.Text = "Добре дошли в приложението за музикални концерти. Тук можете да разглеждате и да се запишете за концерти.";
             // 
             // pictureBox2
             // 
@@ -154,11 +153,15 @@
             // userName
             // 
             userName.AutoSize = true;
-            userName.BackColor = SystemColors.ActiveCaptionText;
-            userName.ForeColor = SystemColors.ControlLightLight;
-            userName.Location = new Point(702, 18);
+            userName.BackColor = Color.Black;
+            userName.BorderStyle = BorderStyle.FixedSingle;
+            userName.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            userName.ForeColor = SystemColors.ButtonFace;
+            userName.ImageAlign = ContentAlignment.TopCenter;
+            userName.Location = new Point(382, 11);
             userName.Name = "userName";
-            userName.Size = new Size(38, 15);
+            userName.Padding = new Padding(2);
+            userName.Size = new Size(69, 31);
             userName.TabIndex = 5;
             userName.Text = "label2";
             userName.Visible = false;
@@ -264,6 +267,7 @@
             loginNameTextBox.BackColor = Color.DarkSlateBlue;
             loginNameTextBox.ForeColor = SystemColors.ButtonFace;
             loginNameTextBox.Location = new Point(515, 127);
+            loginNameTextBox.MaxLength = 8;
             loginNameTextBox.Name = "loginNameTextBox";
             loginNameTextBox.Size = new Size(180, 23);
             loginNameTextBox.TabIndex = 8;
@@ -372,7 +376,6 @@
             concertsPanel.Name = "concertsPanel";
             concertsPanel.Size = new Size(806, 406);
             concertsPanel.TabIndex = 5;
-            concertsPanel.Paint += concertsPanel_Paint;
             // 
             // concertPanel
             // 
@@ -414,6 +417,7 @@
             // 
             concertDescription.Location = new Point(23, 163);
             concertDescription.Name = "concertDescription";
+            concertDescription.ReadOnly = true;
             concertDescription.Size = new Size(274, 225);
             concertDescription.TabIndex = 1;
             concertDescription.Text = "Concert Description";
@@ -431,16 +435,16 @@
             // 
             // accSignOutButton
             // 
-            accSignOutButton.BackColor = Color.Black;
-            accSignOutButton.FlatAppearance.BorderSize = 0;
-            accSignOutButton.FlatStyle = FlatStyle.Flat;
+            accSignOutButton.BackColor = Color.White;
+            accSignOutButton.BackgroundImage = Properties.Resources.back;
+            accSignOutButton.BackgroundImageLayout = ImageLayout.Stretch;
+            accSignOutButton.FlatAppearance.BorderColor = Color.WhiteSmoke;
             accSignOutButton.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            accSignOutButton.ForeColor = Color.Red;
-            accSignOutButton.Location = new Point(621, 12);
+            accSignOutButton.ForeColor = Color.Black;
+            accSignOutButton.Location = new Point(699, 11);
             accSignOutButton.Name = "accSignOutButton";
-            accSignOutButton.Size = new Size(75, 27);
+            accSignOutButton.Size = new Size(29, 27);
             accSignOutButton.TabIndex = 4;
-            accSignOutButton.Text = "Излез";
             accSignOutButton.UseVisualStyleBackColor = false;
             accSignOutButton.Visible = false;
             accSignOutButton.Click += accSignOutButton_Click;
